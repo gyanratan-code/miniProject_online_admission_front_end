@@ -11,12 +11,29 @@
 <body>
     <noscript>Enable JavaScript to view page smoothly</noscript>
     <nav class="nav-bar">
+        <header>Admission Management System</header>
         <!-- Navigation Bar -->
-
+        <ul>
+            <li id="newAdmission">New Admission</li>
+            <li id="checkAdmission"><a href="checkAdmission.html">Check Admission</a></li>
+            <li id="About"><a href="about.html">About</a></li>
+        </ul>
     </nav>
     <main id="root">
         <!-- Main Content -->
-
+        <h1>New Admission Entry</h1>
+        <!-- Form to recieve required data from student -->
+        <div class="form">
+            <form action="recieveData.php" method="post" id="form" required>
+                <input type="text" name="sname" id="studentName" placeholder="Name" required>
+                <input type="email" name="email" id="studentEmail" placeholder="Email Id" required>
+                <input type="tel" name="mobile" id="studentMobile" placeholder="Mobile Number" required>
+                <input type="date" name="dob" id="studentDOB" placeholder="Date of Birth" required>
+                <input type="text" name="program" id="program" placeholder="Program" required>
+                <input type="text" name="degree" id="degree" placeholder="Degree" required>
+                <input type="submit" value="submit" id="submit">
+            </form>
+        </div>
     </main>
     <footer class="footer">
         <!-- Footer Content -->
