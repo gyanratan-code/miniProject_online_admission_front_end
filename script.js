@@ -1,4 +1,5 @@
 const form = document.getElementById("form")
+let msg = document.getElementsByClassName("message")[0];
 //Submit Button
 document.addEventListener("submit",submit);
 function submit(event){
@@ -34,26 +35,59 @@ function submit(event){
             store.add(entry);
         }
         //prompt user that it is added successfully
-
-        //reset the form using javascript to perform further info
-        let userInput=document.querySelectorAll("input");
-        for (let index = 0; index < userInput.length; index++) {
-            userInput[index].value="";
-        }
-    }
-    else{
-        //prompt user that it is not a valid student to be added in database.
-
+        messageBox("Student added successfully.");
         //and prompt the new entry page to be editied for next instruction to be chosen
         document.getElementById("info_new_admit").style= "display: all";
         document.getElementsByClassName("form")[0].style="display:none";
+        //reset the form using javascript to perform further info
+        // let userInput=document.querySelectorAll("input");
+        // for (let index = 0; index < userInput.length-1; index++) {
+        //     userInput[index].value="";
+        // }
+    }
+    else{
+        //prompt user that it is not a valid student to be added in database.
+        messageBox("Not a valid student");
+        //and prompt the new entry page to be editied for next instruction to be chosen
+        document.getElementById("info_new_admit").style= "display: all";
+        document.getElementsByClassName("form")[0].style="display:none";
+        //reset the form using javascript to perform further info
+        // let userInput=document.querySelectorAll("input");
+        // for (let index = 0; index < userInput.length-1; index++) {
+        //     userInput[index].value="";
+        // }
     }
 }
 //subit button for query
 document.getElementById("submitEntry").addEventListener("click",queryLocal);
+document.getElementById("submitEntry").addEventListener("submit",queryLocal);
 function queryLocal(event){
     event.preventDefault();
+    const clickedElement = event.target;
+    const siblings = Array.from(clickedElement.parentElement.children).filter(element => element !== clickedElement);
+    let email = siblings[0].value;
     //perform query and publish search results
+    const dbRequest = indexedDB.open('myDatabase',1);
+    dbRequest.onsuccess = function(event){
+        const db = event.target.result;
+        const transaction = db.transaction(['entries'],'readonly');
+        const objectStore= transaction.objectStore('entries');
+        const index= objectStore.index("email");
+        let newrequest= index.get(email);
+        newrequest.onsuccess= function(event){
+            const student = event.target.result;
+            if(student){
+                //if found print this to message box
+                messageBox("Student found in local database.");
+            }
+            else{
+                messageBox("Student not found in local database.");
+            }
+        }
+        newrequest.onerror = function (event){
+            messageBox("Error:"+event.target.error);
+        }
+    }
 }
 function addNew(){
     //hide the content of info_new_admit and show form
@@ -65,6 +99,7 @@ function newAdmit(event){
     document.getElementsByClassName("form")[0].style="display:none";
     document.getElementsByClassName("form")[1].style="display:none";
     document.getElementById("info_new_admit").style="";
+    document.querySelector("h1").textContent="New Admission Entry";
 }
 function checkAdmit(event){
     event.preventDefault();
@@ -78,3 +113,12 @@ document.getElementById("add_new").addEventListener("click",addNew);
 //new admission and check admission button handler
 document.getElementById("newAdmit").addEventListener("click",newAdmit);
 document.getElementById("checkAdmit").addEventListener("click",checkAdmit);
+//messagebox access
+function messageBox(data){
+    let message=document.getElementById("mcontent");
+        message.textContent=data;
+        msg.style="";
+        setTimeout(() => {
+            msg.style="display:none;"
+        }, 1500);
+}

@@ -95,6 +95,7 @@ input:focus{
     background-color: darkturquoise;
     padding: 10px;
     margin: 0px;
+    border:2px solid black;
 }
 p{
     margin: 0px;
