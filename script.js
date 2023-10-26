@@ -40,10 +40,11 @@ function submit(event){
         document.getElementById("info_new_admit").style= "display: all";
         document.getElementsByClassName("form")[0].style="display:none";
         //reset the form using javascript to perform further info
-        // let userInput=document.querySelectorAll("input");
-        // for (let index = 0; index < userInput.length-1; index++) {
-        //     userInput[index].value="";
-        // }
+        const clickedElement = event.target.children;
+        const siblings = Array.from(event.target.children).filter(element => element != clickedElement);
+        for (let index = 0; index < (siblings.length-1); index++) {
+            siblings[index].value="";
+        }
     }
     else{
         //prompt user that it is not a valid student to be added in database.
@@ -52,10 +53,11 @@ function submit(event){
         document.getElementById("info_new_admit").style= "display: all";
         document.getElementsByClassName("form")[0].style="display:none";
         //reset the form using javascript to perform further info
-        // let userInput=document.querySelectorAll("input");
-        // for (let index = 0; index < userInput.length-1; index++) {
-        //     userInput[index].value="";
-        // }
+        const clickedElement= event.target.children;
+        const siblings = Array.from(event.target.children).filter(element => element != clickedElement);
+        for (let index = 0; index < (siblings.length-1); index++) {
+            siblings[index].value="";
+        }
     }
 }
 //subit button for query
@@ -64,7 +66,7 @@ document.getElementById("submitEntry").addEventListener("submit",queryLocal);
 function queryLocal(event){
     event.preventDefault();
     const clickedElement = event.target;
-    const siblings = Array.from(clickedElement.parentElement.children).filter(element => element !== clickedElement);
+    const siblings = Array.from(clickedElement.parentElement.children).filter(element => element != clickedElement);
     let email = siblings[0].value;
     //perform query and publish search results
     const dbRequest = indexedDB.open('myDatabase',1);
